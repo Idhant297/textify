@@ -1,0 +1,3 @@
+for this project im using EMNIST you can download the data and place the unzipped into this folder.
+
+link: https://www.kaggle.com/datasets/crawford/emnist
