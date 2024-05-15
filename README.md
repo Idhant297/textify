@@ -1,5 +1,5 @@
 # TEXTIFY: CNN from scratch
-This is a project to implement a Convolutional Neural Network (CNN) from scratch using Python and NumPy. The goal of this project is to understand the inner workings of CNNs and to appreciate the complexity of the libraries that we use to build them. 
+This is a project to implement a Convolutional Neural Network (CNN) from scratch using Python and NumPy. The goal of this project is to understand the inner workings of CNNs and to appreciate the complexity of the libraries that we use to build them. It will be able to predict handwriting and convert it into text.
 
 ## Dataset Used:
 EMNIST dataset is used for this project. The dataset is a set of handwritten character digits derived from the NIST Special Database 19 and converted to a 28x28 pixel image format and dataset structure that directly matches the MNIST dataset.
