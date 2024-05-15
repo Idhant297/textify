@@ -129,7 +129,7 @@ def softmax(x):
 
 def load_emnist():
     """ Load EMNIST data from a csv file """
-    data = pd.read_csv('/Users/idhantgulati/Documents/handwriting_rec/data/EMNIST/emnist-digits-train.csv')
+    data = pd.read_csv('data/EMNIST/emnist-digits-train.csv')
     # Assuming the last column is the label and the rest are pixel values
     images = data.iloc[:, :-1].values
     labels = data.iloc[:, -1].values
