@@ -7,7 +7,7 @@ EMNIST dataset is used for this project. The dataset is a set of handwritten cha
 ### Downloading the dataset:
 You can download the dataset from the following link: [EMNIST Dataset](https://www.kaggle.com/datasets/crawford/emnist).
 
-Unzip the dataset and place the contents in `data/` directory.
+Unzip the dataset and place the folder in `data/` directory.
 
 ## For `test-version` Branch:
 You can run `forward.py` and `backward.py` files to test the forward and backward pass of the CNN. There are extra print statements in the code to help you understand the flow of the code. (This will be removed in the `main` branch)
