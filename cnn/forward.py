@@ -33,7 +33,7 @@ def load_emnist(file_path):
     return images, labels
 
 # Example usage:
-train_images, train_labels = load_emnist('/Users/idhantgulati/Documents/handwriting_rec/data/EMNIST/emnist-digits-train.csv')
+train_images, train_labels = load_emnist('data/EMNIST/emnist-mnist-train.csv')
 input_data = train_images[:10]  # Use the first 10 images for example
 
 if __name__ == "__main__":
