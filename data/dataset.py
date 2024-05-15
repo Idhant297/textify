@@ -45,7 +45,7 @@ def preprocessData(images, labels, img_height = 28, img_width = 28):
     
     return images, labels
 
-def loadAndPreprocessData():
+def loadAndPreprocessData(): # only for test
     '''
     Load and preprocess data
     
