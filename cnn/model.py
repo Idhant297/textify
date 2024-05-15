@@ -93,3 +93,11 @@ class CNN:
         print("After conv1 backward", dL_dinput.shape)
         
         return dL_dinput
+
+    @property
+    def params(self):
+        return (self.conv1.params + 
+                self.conv2.params + 
+                self.conv3.params + 
+                self.fc1.params
+        )

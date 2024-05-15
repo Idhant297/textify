@@ -88,6 +88,10 @@ class Conv2DLayer:
             dL_dinput = dL_dinput_padded
 
         return dL_dinput, dL_dweights, dL_dbias
+    
+    @property
+    def params(self):
+        return [self.weights, self.bias]
 
 # ReLU Activation Layer
 class ReLULayer:
@@ -124,6 +128,10 @@ class FullyConnectedLayer:
         self.bias -= lr * dL_dbias
 
         return dL_dinput
+    
+    @property
+    def params(self):
+        return [self.weights, self.bias]
 
 # Flatten Layer
 class FlattenLayer:
