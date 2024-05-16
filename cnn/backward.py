@@ -1,4 +1,4 @@
-from model import CNN
+from cnn.model import CNN
 import pandas as pd
 import numpy as np
 

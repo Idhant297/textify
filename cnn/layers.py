@@ -119,19 +119,20 @@ class FullyConnectedLayer:
 
     def backward(self, dL_dout):
         input = self.cache
-        dL_dweights = np.dot(input.T, dL_dout)
-        dL_dbias = np.sum(dL_dout, axis = 0)
+        self.dL_dweights = np.dot(input.T, dL_dout)
+        self.dL_dbias = np.sum(dL_dout, axis=0)
         dL_dinput = np.dot(dL_dout, self.weights.T)
 
         lr = 0.01
-        self.weights -= lr * dL_dweights
-        self.bias -= lr * dL_dbias
+        self.weights -= lr * self.dL_dweights
+        self.bias -= lr * self.dL_dbias
 
         return dL_dinput
-    
+
     @property
     def params(self):
         return [self.weights, self.bias]
+
 
 # Flatten Layer
 class FlattenLayer:
