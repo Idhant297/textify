@@ -1,8 +1,10 @@
 # Implement forward propagation.
 
-from cnn.model import CNN
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+from cnn.model import CNN
+
 
 def forwardPass(input_data, model):
     '''
@@ -16,6 +18,7 @@ def forwardPass(input_data, model):
     output: output from the final layer of the cnn model
     '''
     return model.forward(input_data)
+
 
 def load_emnist(file_path):
     """ Load EMNIST data from a csv file """
@@ -32,6 +35,7 @@ def load_emnist(file_path):
 
     return images, labels
 
+
 # Example usage:
 train_images, train_labels = load_emnist('data/EMNIST/emnist-mnist-train.csv')
 input_data = train_images[:10]  # Use the first 10 images for example
@@ -45,5 +49,5 @@ if __name__ == "__main__":
 
     # Perform the forward pass
     output = forwardPass(input_data, cnn_model)
-    print("Output of the forward pass:", output)
-
+    #print("Output of the forward pass:", output)
+    print("Forward pass completed successfully!")

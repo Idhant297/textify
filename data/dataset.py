@@ -22,7 +22,7 @@ def loadData(data_path):
     
     return images, labels
 
-def preprocessData(images, labels, img_height = 28, img_width = 28):
+def preprocessData(images, labels, img_height=28, img_width=28):
     '''
     preprocess data
     
@@ -40,29 +40,8 @@ def preprocessData(images, labels, img_height = 28, img_width = 28):
     images /= 255.0
     
     # one hot encode the labels
-    num_classes = np.unique(labels).shape[0]
-    labels = np.eye(num_classes)
+    num_classes = np.max(labels) + 1  # Assuming labels start from 0
+    labels_one_hot = np.zeros((labels.shape[0], num_classes))
+    labels_one_hot[np.arange(labels.shape[0]), labels] = 1
     
-    return images, labels
-
-def loadAndPreprocessData(): # only for test
-    '''
-    Load and preprocess data
-    
-    output:
-    dictionary containing images and labels
-    '''
-    train_images, train_labels = loadData(train_path)
-    test_images, test_labels = loadData(test_path)
-    
-    train_images, train_labels = preprocessData(train_images, train_labels)
-    test_images, test_labels = preprocessData(test_images, test_labels)
-    
-    return {
-        'train_images': train_images,
-        'train_labels': train_labels,
-        'test_images': test_images,
-        'test_labels': test_labels
-    }
-
-print(loadAndPreprocessData())
+    return images, labels_one_hot

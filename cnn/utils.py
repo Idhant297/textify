@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import pickle
+import cnn.model as model
 
 def loadData():
     '''
@@ -63,3 +65,51 @@ def softmax(x):
     
     e_x = np.exp(x - np.max(x, axis=1, keepdims=True))
     return e_x / e_x.sum(axis=1, keepdims=True)
+
+def saveModel(model, path):
+    '''
+    Save the trained model
+    
+    Parameters:
+    model : trained model
+    path : path to save the model
+    
+    '''
+    with open(path, 'wb') as file:
+        pickle.dump(model, file)
+    
+def shuffleData(images, labels):
+    '''
+    Parameters:
+    images (numpy array) : array of images
+    labels (numpy array) : array of labels
+    
+    Returns:
+    images (numpy array) : shuffled array of images
+    labels (numpy array) : shuffled array of labels
+    '''
+    # shuffle the data
+    permutation = np.random.permutation(images.shape[0])
+    images = images[permutation]
+    labels = labels[permutation]
+    
+    return images, labels
+    
+    
+# def loadModel(filename):
+#     """
+#     Load a model from a file.
+    
+#     Args:
+#         filename (str): The path to the file containing the model's saved parameters.
+    
+#     Returns:
+#         model (object): An instance of the model with loaded parameters.
+#     """
+#     with open(filename, 'rb') as file:
+#         model_parameters = pickle.load(file)
+
+#     # Assuming CNN is your model class, and it has a method to initialize with parameters
+#     model_ = model.CNN()
+#     model_.(model_parameters)
+#     return model_

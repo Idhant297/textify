@@ -174,5 +174,4 @@ if __name__ == "__main__":
     
     # Perform backward pass
     gradients = cnn_model.backward(dL_dout)
-    print("gathered gradients", gradients)
-    print("Gradients computed during the backward pass:", gradients)
+    print("Backward pass completed successfully!")

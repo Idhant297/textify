@@ -11,6 +11,8 @@ class Conv2DLayer:
         self.weights = np.random.randn(num_filters, input_channel, kernel_size, kernel_size) * 0.01
         self.bias = np.zeros((num_filters, 1))
         self.cache = None
+        self.dL_dweights = None
+        self.dL_dbias = None
 
     def forward(self, input):
         '''
@@ -26,7 +28,7 @@ class Conv2DLayer:
                               mode='constant')
         new_h = (h - self.kernel_size + 2 * self.padding) // self.stride + 1
         new_w = (w - self.kernel_size + 2 * self.padding) // self.stride + 1
-        output = np.zeros((batch_size, new_h, new_w, self.num_filters))
+        output = np.zeros((batch_size, new_h, new_w, self.num_filters)) 
 
         for i in range(batch_size):
             for j in range(self.num_filters):
@@ -36,10 +38,10 @@ class Conv2DLayer:
                         h_end = h_start + self.kernel_size
                         w_start = w_idx * self.stride
                         w_end = w_start + self.kernel_size
-                        window = padded_input[i, h_start:h_end, w_start:w_end, :]
+                        window = padded_input[i, h_start:h_end, w_start:w_end, :] 
                         #transpose the weights
-                        weight_to_use = self.weights[j].transpose(1, 2, 0)
-                        output[i, h_idx, w_idx, j] = np.sum(window * weight_to_use) + self.bias[j]
+                        weight_to_use = self.weights[j].transpose(1, 2, 0) 
+                        output[i, h_idx, w_idx, j] = np.sum(window * weight_to_use) + self.bias[j] 
         self.cache = (input, padded_input)
         return output
 
@@ -53,16 +55,17 @@ class Conv2DLayer:
         dL_dweights: numpy array of shape (num_filters, input_channel, kernel_size, kernel_size)
         dL_dbias: numpy array of shape (num_filters, 1)
         '''
+
+        # return dL_dinput
         input, padded_input = self.cache
         batch_size, h, w, _ = input.shape
         _, h_out, w_out, _ = dL_dout.shape
 
         # Initialize gradients with zeros
+        self.dL_dweights = np.zeros_like(self.weights)
+        self.dL_dbias = np.zeros_like(self.bias)
         dL_dinput_padded = np.zeros_like(padded_input)
-        dL_dweights = np.zeros_like(self.weights)
-        dL_dbias = np.zeros_like(self.bias)
 
-        # # Iterate over each example in the batch
         for i in range(batch_size):
             for j in range(self.num_filters):
                 for h_idx in range(h_out):
@@ -75,11 +78,11 @@ class Conv2DLayer:
                         # Calculate gradients
                         window = padded_input[i, h_start:h_end, w_start:w_end, :]
                         window = window.transpose(2, 0, 1)
-                        weight_to_use = self.weights[j].transpose(1, 2, 0)
-                        dL_dinput_padded[i, h_start:h_end, w_start:w_end, :] += weight_to_use * dL_dout[i, h_idx, w_idx, j]
-                        #dL_dinput_padded[i, h_start:h_end, w_start:w_end, :] += self.weights[j] * dL_dout[i, h_idx, w_idx, j]
-                        dL_dweights[j] += window * dL_dout[i, h_idx, w_idx, j]
-                        dL_dbias[j] += dL_dout[i, h_idx, w_idx, j]
+                        self.dL_dweights[j] += window * dL_dout[i, h_idx, w_idx, j]
+                        self.dL_dbias[j] += dL_dout[i, h_idx, w_idx, j]
+                        dL_dinput_padded[i, h_start:h_end, w_start:w_end, :] += (
+                            self.weights[j].transpose(1, 2, 0) * dL_dout[i, h_idx, w_idx, j]
+                        )
 
         # Remove padding from the gradient wrt input if there was any
         if self.padding != 0:
@@ -87,8 +90,8 @@ class Conv2DLayer:
         else:
             dL_dinput = dL_dinput_padded
 
-        return dL_dinput, dL_dweights, dL_dbias
-    
+        return dL_dinput
+
     @property
     def params(self):
         return [self.weights, self.bias]
@@ -109,7 +112,7 @@ class ReLULayer:
 # Fully Connected Layer
 class FullyConnectedLayer:
     def __init__(self, input_size, num_classes):
-        self.weights = np.random.randn(input_size, num_classes) * 0.01
+        self.weights = np.random.randn(input_size, num_classes) * 0.01 
         self.bias = np.zeros((1, num_classes))
         self.cache = None
 
@@ -120,7 +123,7 @@ class FullyConnectedLayer:
     def backward(self, dL_dout):
         input = self.cache
         self.dL_dweights = np.dot(input.T, dL_dout)
-        self.dL_dbias = np.sum(dL_dout, axis=0)
+        self.dL_dbias = np.sum(dL_dout, axis=0) 
         dL_dinput = np.dot(dL_dout, self.weights.T)
 
         lr = 0.01
@@ -182,7 +185,7 @@ class MaxPoolingLayer:
         new_w = w // self.stride
         for i in range(new_h):
             for j in range(new_w):
-                im_region = image[(i * self.stride):(i * self.stride + self.pool_size), (j * self.stride):(j * self.stride + self.pool_size)]
+                im_region = image[(i * self.stride):(i * self.stride + self.pool_size), (j * self.stride):(j * self.stride + self.pool_size)] #11
                 yield im_region, i, j
 
     def forward(self, input):
@@ -205,7 +208,7 @@ class MaxPoolingLayer:
                         h_end = h_start + self.pool_size
                         w_start = w_idx * self.stride
                         w_end = w_start + self.pool_size
-                        window = input[i, h_start:h_end, w_start:w_end, nF]
+                        window = input[i, h_start:h_end, w_start:w_end, nF] 
                         output[i, h_idx, w_idx, nF] = np.max(window)
         return output
 
